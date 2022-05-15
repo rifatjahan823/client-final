@@ -31,7 +31,7 @@ async function run() {
             * app.get('/booking') // get all bookings in this collection. or get more than one or by filter
             * app.get('/booking/:id') // get a specific booking 
             * app.post('/booking') // add a new booking
-            * app.patch('/booking/:id) //
+            * app.patch('/booking/:id) // upsert ==> update or insert
             * app.delete('/booking/:id) //
         */
 
@@ -46,6 +46,13 @@ async function run() {
 
             const bookings = await bookingCollection.insertOne(booking);
             return res.send({ success: true, bookings });
+        })
+
+        app.get('/booking', async(req, res)=>{
+            const patient = req.query.patient;
+            const query = { patient: patient };
+            const bookings = await bookingCollection.find(query).toArray();
+            res.send(bookings);
         })
 
         app.get('/booking', async (req, res) => {
