@@ -42,12 +42,12 @@ async function run() {
             res.send(services);
         })
 
-        app.get('/user', verifyJWT, async (req, res)=>{
+        app.get('/user', async (req, res)=>{
             const users = await userCollection.find().toArray();
             res.send(users);
         })
 
-        app.put('/user/admin/:email', verifyJWT, async (req, res) => {
+        app.put('/user/admin/:email',  async (req, res) => {
             const email = req.params.email;
             const requester = req.decoded.email;
             const requesterAccount = await userCollection.findOne({email : requester});
@@ -106,7 +106,7 @@ async function run() {
             return res.send({ success: true, bookings });
         })
 
-        app.get('/booking', verifyJWT, async (req, res) => {
+        app.get('/booking', async (req, res) => {
             const patient = req.query.patient;
             const decodedEmail = req.decoded.email;
             if (patient === decodedEmail) {
